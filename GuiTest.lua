@@ -13,8 +13,8 @@ end
 -- Main frame setup
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
-mainFrame.Size = UDim2.new(0, 600, 0, 400)  -- Reduced height to 400
-mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)  -- Adjusted position
+mainFrame.Size = UDim2.new(0, 500, 0, 350)  -- Adjusted size for better fit
+mainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)  -- Centered
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 addUICorner(mainFrame, 20)
 mainFrame.Visible = false  -- Make the frame hidden initially
@@ -228,8 +228,8 @@ end)
 -- Open GUI Button (toggle visibility of the frame)
 local openGuiButton = Instance.new("TextButton")
 openGuiButton.Parent = screenGui
-openGuiButton.Size = UDim2.new(0, 100, 0, 40)
-openGuiButton.Position = UDim2.new(1, -120, 0.5, -60)  -- Positioned at the right-middle
+openGuiButton.Size = UDim2.new(0, 120, 0, 40)
+openGuiButton.Position = UDim2.new(1, -130, 0.5, -70)  -- Positioned at the right-middle and a little bit up
 openGuiButton.Text = "Open GUI"
 openGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 openGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)

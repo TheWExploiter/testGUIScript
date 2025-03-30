@@ -14,7 +14,7 @@ end
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0, 600, 0, 400)  -- Reduced height to 400
-mainFrame.Position = UDim2.new(0.5, -300, 0.5, -150)  -- Adjusted position
+mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)  -- Adjusted position
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 addUICorner(mainFrame, 20)
 mainFrame.Visible = false  -- Make the frame hidden initially
@@ -128,7 +128,7 @@ local antiRagdollButton = Instance.new("TextButton")
 antiRagdollButton.Parent = featuresFrame
 antiRagdollButton.Size = UDim2.new(0, 300, 0, 40)
 antiRagdollButton.Position = UDim2.new(0.5, -150, 0, 50)
-antiRagdollButton.Text = "Toggle Anti-Ragdoll (Patched)"
+antiRagdollButton.Text = "Toggle Anti-Ragdoll"
 antiRagdollButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
 antiRagdollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 addUICorner(antiRagdollButton, 10)

@@ -225,15 +225,20 @@ game.ReplicatedStorage.SlapEvent.OnClientEvent:Connect(function()
     anchorHumanoidRootPart()
 end)
 
--- Open GUI Button (toggle visibility of the frame)
-local openGuiButton = Instance.new("TextButton")
-openGuiButton.Parent = screenGui
-openGuiButton.Size = UDim2.new(0, 120, 0, 40)
-openGuiButton.Position = UDim2.new(1, -130, 0.5, -70)  -- Positioned at the right-middle and a little bit up
-openGuiButton.Text = "Open GUI"
-openGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-openGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-addUICorner(openGuiButton, 10)
+-- Create the Button to toggle the GUI
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = screenGui
+toggleButton.Size = UDim2.new(0, 100, 0, 50)
+toggleButton.Position = UDim2.new(0.95, -110, 0.5, -15)  -- Updated position
+toggleButton.Text = "Open GUI"
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addUICorner(toggleButton, 10)
+
+toggleButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+    toggleButton.Visible = not toggleButton.Visible  -- Toggle visibility of the open button
+end)
 
 openGuiButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible

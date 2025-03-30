@@ -15,6 +15,21 @@ mainFrame.Size = UDim2.new(0, 500, 0, 400) -- Wider GUI
 mainFrame.Position = UDim2.new(0.5, -250, 0.3, -10)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 addUICorner(mainFrame, 15)
+mainFrame.Visible = false  -- Initially hidden
+
+-- Create Open GUI Button
+local openGuiButton = Instance.new("TextButton")
+openGuiButton.Parent = screenGui
+openGuiButton.Size = UDim2.new(0, 150, 0, 40)
+openGuiButton.Position = UDim2.new(1, -160, 0.5, -20)  -- Right middle and a little up
+openGuiButton.Text = "Open GUI"
+openGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+openGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addUICorner(openGuiButton, 10)
+
+openGuiButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+end)
 
 local sections = {"Teleports", "Features", "Settings"}
 local buttons = {}
@@ -49,6 +64,7 @@ for i, section in ipairs(sections) do
     end)
 end
 
+-- Teleports Section
 local teleportsFrame = Instance.new("Frame")
 teleportsFrame.Parent = mainFrame
 teleportsFrame.Name = "Teleports"
@@ -59,10 +75,10 @@ teleportsFrame.Visible = true
 
 local teleports = {
     {"Guide Place", Vector3.new(17892, -130, -3539)},
-    {"Guide Place Outside", Vector3.new(17934, -130, -3600)},  -- Added this line
+    {"Guide Place Outside", Vector3.new(17934, -130, -3600)},
     {"Starter Island", Vector3.new(0, -4, 0)},
     {"Slapple Island", Vector3.new(-388, 51, -14)},
-    {"Cannon Island", Vector3.new(258, 34, 195)}  -- Added this line for Cannon Island teleport
+    {"Cannon Island", Vector3.new(258, 34, 195)}
 }
 
 for i, tp in ipairs(teleports) do
@@ -82,6 +98,7 @@ for i, tp in ipairs(teleports) do
     end)
 end
 
+-- Features Section
 local featuresFrame = Instance.new("Frame")
 featuresFrame.Parent = mainFrame
 featuresFrame.Name = "Features"
@@ -100,29 +117,25 @@ antiVoid.TextColor3 = Color3.fromRGB(255, 255, 255)
 antiVoid.Text = "Activate Anti-Void"
 addUICorner(antiVoid, 10)
 
-local antiVoidEnabled = false
+local isAntiVoidActive = false
 antiVoid.MouseButton1Click:Connect(function()
-    if antiVoidEnabled then
-        -- Disable Anti-Void
-        for _, part in pairs(game.Workspace:GetChildren()) do
-            if part.Name == "VoidGuard" then
-                part:Destroy()
-            end
-        end
-        antiVoid.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Disabled (White/Gray)
-        antiVoidEnabled = false
-    else
-        -- Enable Anti-Void
+    isAntiVoidActive = not isAntiVoidActive
+    if isAntiVoidActive then
+        antiVoid.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  -- Green when active
         local voidGuard = Instance.new("Part")
-        voidGuard.Name = "VoidGuard"
         voidGuard.Size = Vector3.new(1000000, 2, 1000000)
         voidGuard.Position = Vector3.new(-82, -12, 87)
         voidGuard.Anchored = true
         voidGuard.CanCollide = true
         voidGuard.Transparency = 0.8
         voidGuard.Parent = game.Workspace
-        antiVoid.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Enabled (Green)
-        antiVoidEnabled = true
+    else
+        antiVoid.BackgroundColor3 = Color3.fromRGB(169, 169, 169)  -- Gray when inactive
+        for _, part in ipairs(workspace:GetChildren()) do
+            if part.Name == "VoidGuard" then
+                part:Destroy()
+            end
+        end
     end
 end)
 
@@ -131,25 +144,22 @@ local antiRagdoll = Instance.new("TextButton")
 antiRagdoll.Parent = featuresFrame
 antiRagdoll.Size = UDim2.new(0, 300, 0, 40)
 antiRagdoll.Position = UDim2.new(0.5, -150, 0, 50)
-antiRagdoll.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+antiRagdoll.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 antiRagdoll.TextColor3 = Color3.fromRGB(255, 255, 255)
 antiRagdoll.Text = "Activate Anti-Ragdoll"
 addUICorner(antiRagdoll, 10)
 
-local antiRagdollEnabled = false
+local isAntiRagdollActive = false
 antiRagdoll.MouseButton1Click:Connect(function()
-    if antiRagdollEnabled then
-        -- Disable Anti-Ragdoll
-        antiRagdoll.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Disabled (White/Gray)
-        antiRagdollEnabled = false
+    isAntiRagdollActive = not isAntiRagdollActive
+    if isAntiRagdollActive then
+        antiRagdoll.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  -- Green when active
     else
-        -- Enable Anti-Ragdoll
-        antiRagdoll.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Enabled (Green)
-        antiRagdollEnabled = true
+        antiRagdoll.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red when inactive
     end
 end)
 
--- Settings Frame for Speed and Jump Power
+-- Settings Section
 local settingsFrame = Instance.new("Frame")
 settingsFrame.Parent = mainFrame
 settingsFrame.Name = "Settings"
@@ -158,10 +168,11 @@ settingsFrame.Position = UDim2.new(0, 0, 0, 40)
 settingsFrame.BackgroundTransparency = 1
 settingsFrame.Visible = false
 
+-- Speed Setting
 local speedBox = Instance.new("TextBox")
 speedBox.Parent = settingsFrame
 speedBox.Size = UDim2.new(0, 150, 0, 40)
-speedBox.Position = UDim2.new(0.5, -75, 0, 0)
+speedBox.Position = UDim2.new(0.5, -75, 0, 50)
 speedBox.Text = "Enter Speed"
 addUICorner(speedBox, 10)
 
@@ -175,52 +186,19 @@ speedBox.FocusLost:Connect(function()
     local newSpeed = tonumber(speedBox.Text)
     if newSpeed then
         setSpeed(newSpeed)
+        player:SetAttribute("SavedSpeed", newSpeed)
     end
 end)
 
-local jumpBox = Instance.new("TextBox")
-jumpBox.Parent = settingsFrame
-jumpBox.Size = UDim2.new(0, 150, 0, 40)
-jumpBox.Position = UDim2.new(0.5, -75, 0, 50)
-jumpBox.Text = "Enter JumpPower"
-addUICorner(jumpBox, 10)
-
-local function setJumpPower(value)
-    if player.Character and player.Character:FindFirstChild("Humanoid") then
-        player.Character.Humanoid.JumpPower = value
-    end
-end
-
-jumpBox.FocusLost:Connect(function()
-    local newJumpPower = tonumber(jumpBox.Text)
-    if newJumpPower then
-        setJumpPower(newJumpPower)
-    end
-end)
-
--- Draggable GUI
-local dragging = false
-local dragInput, dragStart, startPos
-
-mainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = mainFrame.Position
-    end
-end)
-
-mainFrame.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-end)
-
-mainFrame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
+game.Players.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Connect(function(char)
+        if p == player then
+            local savedSpeed = player:GetAttribute("SavedSpeed")
+            if savedSpeed then
+                setSpeed(savedSpeed)
+            end
+        end
+    end)
 end)
 
 -- Show GUI

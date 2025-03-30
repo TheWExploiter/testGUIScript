@@ -1,23 +1,33 @@
--- Updated GUI with working teleport buttons, slap aura (hitbox extension + auto slap), and anti-void functionality.
+local player = game.Players.LocalPlayer local screenGui = Instance.new("ScreenGui") screenGui.ResetOnSpawn = false screenGui.Parent = player:WaitForChild("PlayerGui")
 
-local Gui = Instance.new("ScreenGui") Gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local function addUICorner(uiElement, radius) local corner = Instance.new("UICorner") corner.CornerRadius = UDim.new(0, radius) corner.Parent = uiElement end
 
-local Frame = Instance.new("Frame") Frame.Size = UDim2.new(0.3, 0, 0.5, 0) Frame.Position = UDim2.new(0.35, 0, 0.25, 0) Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) Frame.Parent = Gui
+local mainFrame = Instance.new("Frame") mainFrame.Parent = screenGui mainFrame.Size = UDim2.new(0, 400, 0, 500) mainFrame.Position = UDim2.new(0.5, -200, 0.3, -10) mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) addUICorner(mainFrame, 15)
 
-local Title = Instance.new("TextLabel") Title.Size = UDim2.new(1, 0, 0.1, 0) Title.Text = "Teleport GUI Made by Cat" Title.TextColor3 = Color3.fromRGB(255, 255, 255) Title.Parent = Frame
+local scrollFrame = Instance.new("ScrollingFrame") scrollFrame.Parent = mainFrame scrollFrame.Size = UDim2.new(1, 0, 1, 0) scrollFrame.CanvasSize = UDim2.new(0, 0, 4, 0) scrollFrame.ScrollBarThickness = 10 scrollFrame.BackgroundTransparency = 1
 
-local function createButton(name, pos, callback) local Button = Instance.new("TextButton") Button.Size = UDim2.new(0.9, 0, 0.1, 0) Button.Position = UDim2.new(0.05, 0, pos, 0) Button.Text = name Button.TextColor3 = Color3.fromRGB(255, 255, 255) Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50) Button.Parent = Frame Button.MouseButton1Click:Connect(callback) end
+local speedTextBox = Instance.new("TextBox") speedTextBox.Parent = scrollFrame speedTextBox.Size = UDim2.new(0, 300, 0, 40) speedTextBox.Position = UDim2.new(0.5, -150, 0.05, -10) speedTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255) speedTextBox.TextColor3 = Color3.fromRGB(0, 0, 0) speedTextBox.PlaceholderText = "Enter Speed" addUICorner(speedTextBox, 10)
 
-createButton("Guide Place", 0.2, function() game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(17892, -130, -3539)) end)
+local speedButton = Instance.new("TextButton") speedButton.Parent = scrollFrame speedButton.Size = UDim2.new(0, 300, 0, 40) speedButton.Position = UDim2.new(0.5, -150, 0.12, -10) speedButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255) speedButton.TextColor3 = Color3.fromRGB(255, 255, 255) speedButton.Text = "Set Speed" addUICorner(speedButton, 10)
 
-createButton("Guide Place Outside", 0.3, function() game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(17934, -130, -3600)) end)
+speedButton.MouseButton1Click:Connect(function() local speedValue = tonumber(speedTextBox.Text) if speedValue and player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = speedValue end end)
 
-createButton("Starter Island", 0.4, function() game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(-6, -5, 0)) end)
+player.CharacterAdded:Connect(function(character) character:WaitForChild("Humanoid").WalkSpeed = tonumber(speedTextBox.Text) or 16 end)
 
-createButton("Slap Aura", 0.5, function() local character = game.Players.LocalPlayer.Character if character then local glove = character:FindFirstChild("Glove") if glove then local hitbox = Instance.new("Part") hitbox.Size = Vector3.new(10, 10, 10) -- Extends hitbox hitbox.Transparency = 1 hitbox.CanCollide = false hitbox.Anchored = true hitbox.Parent = character hitbox.CFrame = character.PrimaryPart.CFrame
+local antiVoid = Instance.new("TextButton") antiVoid.Parent = scrollFrame antiVoid.Size = UDim2.new(0, 300, 0, 40) antiVoid.Position = UDim2.new(0.5, -150, 0.2, -10) antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255) antiVoid.TextColor3 = Color3.fromRGB(255, 255, 255) antiVoid.Text = "Activate Anti-Void" addUICorner(antiVoid, 10)
 
-hitbox.Touched:Connect(function(hit) local enemy = hit.Parent if enemy and enemy:FindFirstChild("Humanoid") then game.ReplicatedStorage.SlapEvent:FireServer(enemy) end end) end end 
+antiVoid.MouseButton1Click:Connect(function() local voidGuard = Instance.new("Part") voidGuard.Size = Vector3.new(1000000, 2, 1000000) voidGuard.Position = Vector3.new(-82, -8, 87) voidGuard.Anchored = true voidGuard.Transparency = 0.8 voidGuard.Parent = game.Workspace end)
+
+local tpButton1 = Instance.new("TextButton") tpButton1.Parent = scrollFrame tpButton1.Size = UDim2.new(0, 300, 0, 40) tpButton1.Position = UDim2.new(0.5, -150, 0.3, -10) tpButton1.BackgroundColor3 = Color3.fromRGB(70, 130, 180) tpButton1.TextColor3 = Color3.fromRGB(255, 255, 255) tpButton1.Text = "Teleport: Guide Place" addUICorner(tpButton1, 10)
+
+tpButton1.MouseButton1Click:Connect(function() if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then player.Character.HumanoidRootPart.CFrame = CFrame.new(17892, -130, -3539) end end)
+
+local slapAura = Instance.new("TextButton") slapAura.Parent = scrollFrame slapAura.Size = UDim2.new(0, 300, 0, 40) slapAura.Position = UDim2.new(0.5, -150, 0.4, -10) slapAura.BackgroundColor3 = Color3.fromRGB(255, 0, 0) slapAura.TextColor3 = Color3.fromRGB(255, 255, 255) slapAura.Text = "Activate Slap Farm" addUICorner(slapAura, 10)
+
+slapAura.MouseButton1Click:Connect(function() if player.Backpack:FindFirstChild("Mace") then local fakePlayer = Instance.new("Part") fakePlayer.Size = Vector3.new(2, 6, 2) fakePlayer.Position = Vector3.new(17934, -130, -3600) fakePlayer.Anchored = true fakePlayer.Parent = game.Workspace
+
+local mace = player.Backpack:FindFirstChild("Mace") mace.Parent = player.Character while mace and fakePlayer do mace:Activate() task.wait(1) end end 
 
 end)
 
-local AntiVoid = Instance.new("Part") AntiVoid.Size = Vector3.new(1000000, 1, 1000000) AntiVoid.Position = Vector3.new(-82, -12, 87) AntiVoid.Anchored = true AntiVoid.Transparency = 0.8 AntiVoid.CanCollide = true AntiVoid.Parent = game.Workspace
+-- Made by ImCatTrust

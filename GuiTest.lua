@@ -13,10 +13,11 @@ end
 -- Main frame setup
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
-mainFrame.Size = UDim2.new(0, 600, 0, 500)  -- Centered GUI size
-mainFrame.Position = UDim2.new(0.5, -300, 0.5, -250)
+mainFrame.Size = UDim2.new(0, 600, 0, 400)  -- Reduced height to 400
+mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)  -- Adjusted position
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 addUICorner(mainFrame, 20)
+mainFrame.Visible = false  -- Make the frame hidden initially
 
 -- Title for the frame
 local titleLabel = Instance.new("TextLabel")
@@ -222,4 +223,19 @@ end
 -- Listen for when the player is slapped (using a function)
 game.ReplicatedStorage.SlapEvent.OnClientEvent:Connect(function()
     anchorHumanoidRootPart()
+end)
+
+-- Open GUI Button (toggle visibility of the frame)
+local openGuiButton = Instance.new("TextButton")
+openGuiButton.Parent = screenGui
+openGuiButton.Size = UDim2.new(0, 100, 0, 40)
+openGuiButton.Position = UDim2.new(1, -120, 0.5, -60)  -- Positioned at the right-middle
+openGuiButton.Text = "Open GUI"
+openGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+openGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addUICorner(openGuiButton, 10)
+
+openGuiButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+    openGuiButton.Visible = not openGuiButton.Visible  -- Toggle visibility of the open button
 end)

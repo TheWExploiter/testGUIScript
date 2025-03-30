@@ -117,24 +117,28 @@ antiVoid.TextColor3 = Color3.fromRGB(255, 255, 255)
 antiVoid.Text = "Activate Anti-Void"
 addUICorner(antiVoid, 10)
 
+local voidGuard = nil  -- Declare the variable globally
 local isAntiVoidActive = false
 antiVoid.MouseButton1Click:Connect(function()
     isAntiVoidActive = not isAntiVoidActive
     if isAntiVoidActive then
         antiVoid.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  -- Green when active
-        local voidGuard = Instance.new("Part")
-        voidGuard.Size = Vector3.new(1000000, 2, 1000000)
-        voidGuard.Position = Vector3.new(-82, -12, 87)
-        voidGuard.Anchored = true
-        voidGuard.CanCollide = true
-        voidGuard.Transparency = 0.8
-        voidGuard.Parent = game.Workspace
+        -- Create the void guard if it doesn't exist
+        if not voidGuard then
+            voidGuard = Instance.new("Part")
+            voidGuard.Size = Vector3.new(1000000, 2, 1000000)
+            voidGuard.Position = Vector3.new(-82, -12, 87)
+            voidGuard.Anchored = true
+            voidGuard.CanCollide = true
+            voidGuard.Transparency = 0.8
+            voidGuard.Parent = game.Workspace
+        end
     else
         antiVoid.BackgroundColor3 = Color3.fromRGB(169, 169, 169)  -- Gray when inactive
-        for _, part in ipairs(workspace:GetChildren()) do
-            if part.Name == "VoidGuard" then
-                part:Destroy()
-            end
+        -- Destroy the void guard if it exists
+        if voidGuard then
+            voidGuard:Destroy()
+            voidGuard = nil  -- Set it back to nil so it can be recreated when activated
         end
     end
 end)
@@ -154,8 +158,16 @@ antiRagdoll.MouseButton1Click:Connect(function()
     isAntiRagdollActive = not isAntiRagdollActive
     if isAntiRagdollActive then
         antiRagdoll.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  -- Green when active
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character:FindFirstChild("Humanoid")
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)  -- Disable ragdoll physics
+        end
     else
         antiRagdoll.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red when inactive
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character:FindFirstChild("Humanoid")
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, true)  -- Enable ragdoll physics
+        end
     end
 end)
 
@@ -172,7 +184,7 @@ settingsFrame.Visible = false
 local speedBox = Instance.new("TextBox")
 speedBox.Parent = settingsFrame
 speedBox.Size = UDim2.new(0, 150, 0, 40)
-speedBox.Position = UDim2.new(0.5, -75, 0, 50)
+speedBox.Position = UDim2.new(0.5, -75, 0, 0)
 speedBox.Text = "Enter Speed"
 addUICorner(speedBox, 10)
 
@@ -201,5 +213,35 @@ game.Players.PlayerAdded:Connect(function(p)
     end)
 end)
 
--- Show GUI
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Jump Power Setting
+local jumpBox = Instance.new("TextBox")
+jumpBox.Parent = settingsFrame
+jumpBox.Size = UDim2.new(0, 150, 0, 40)
+jumpBox.Position = UDim2.new(0.5, -75, 0, 50)
+jumpBox.Text = "Enter Jump Power"
+addUICorner(jumpBox, 10)
+
+local function setJumpPower(value)
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.JumpPower = value
+    end
+end
+
+jumpBox.FocusLost:Connect(function()
+    local newJumpPower = tonumber(jumpBox.Text)
+    if newJumpPower then
+        setJumpPower(newJumpPower)
+        player:SetAttribute("SavedJumpPower", newJumpPower)
+    end
+end)
+
+game.Players.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Connect(function(char)
+        if p == player then
+            local savedJumpPower = player:GetAttribute("SavedJumpPower")
+            if savedJumpPower then
+                setJumpPower(savedJumpPower)
+            end
+        end
+    end)
+end)

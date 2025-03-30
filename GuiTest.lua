@@ -128,7 +128,7 @@ end)
 
 -- Speed Button in Settings
 local speedBox = Instance.new("TextBox")
-speedBox.Parent = featuresFrame
+speedBox.Parent = settingsFrame
 speedBox.Size = UDim2.new(0, 150, 0, 40)
 speedBox.Position = UDim2.new(0.5, -75, 0, 50)
 speedBox.Text = "Enter Speed"
@@ -150,7 +150,7 @@ end)
 
 -- Jump Power Button in Settings
 local jumpBoostBox = Instance.new("TextBox")
-jumpBoostBox.Parent = featuresFrame
+jumpBoostBox.Parent = settingsFrame
 jumpBoostBox.Size = UDim2.new(0, 150, 0, 40)
 jumpBoostBox.Position = UDim2.new(0.5, -75, 0, 100)
 jumpBoostBox.Text = "Enter Jump Power"

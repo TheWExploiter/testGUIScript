@@ -1,3 +1,6 @@
+-- Maximum V5 Testinh
+g
+
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
 screenGui.ResetOnSpawn = false
@@ -9,7 +12,6 @@ local function addUICorner(uiElement, radius)
     corner.Parent = uiElement
 end
 
--- Create Main GUI Frame
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0, 500, 0, 300)
@@ -21,7 +23,6 @@ local sections = {"Teleports", "Features"}
 local buttons = {}
 local activeSection = "Teleports"
 
--- Section Buttons Frame
 local sectionFrame = Instance.new("Frame")
 sectionFrame.Parent = mainFrame
 sectionFrame.Size = UDim2.new(1, 0, 0, 40)
@@ -36,6 +37,7 @@ for i, section in ipairs(sections) do
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     buttons[section] = btn
+
     btn.MouseButton1Click:Connect(function()
         activeSection = section
         for _, child in pairs(mainFrame:GetChildren()) do
@@ -50,7 +52,6 @@ for i, section in ipairs(sections) do
     end)
 end
 
--- Teleports Frame
 local teleportsFrame = Instance.new("Frame")
 teleportsFrame.Parent = mainFrame
 teleportsFrame.Name = "Teleports"
@@ -85,7 +86,6 @@ for i, tp in ipairs(teleports) do
     end)
 end
 
--- Features Frame
 local featuresFrame = Instance.new("Frame")
 featuresFrame.Parent = mainFrame
 featuresFrame.Name = "Features"
@@ -117,7 +117,6 @@ antiVoid.MouseButton1Click:Connect(function()
         voidGuard.Anchored = true
         voidGuard.CanCollide = true
         voidGuard.Parent = game.Workspace
-        voidGuard.Transparency = 0.7  -- Set transparency to 0.7
     else
         antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
         antiVoid.Text = "Activate Anti-Void"
@@ -148,54 +147,47 @@ flyButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
--- Open/Close GUI Button (always visible)
-local toggleButton = Instance.new("TextButton")
-toggleButton.Parent = screenGui
-toggleButton.Size = UDim2.new(0, 100, 0, 50)
-toggleButton.Position = UDim2.new(0.95, -110, 0.5, -15)  -- New coordinates
-toggleButton.Text = "Open GUI"
-toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-addUICorner(toggleButton, 10)
+-- Hide Player Name Feature
 
-toggleButton.MouseButton1Click:Connect(function()
-    mainFrame.Visible = not mainFrame.Visible
+local nameFrame = Instance.new("Frame")
+nameFrame.Parent = screenGui
+nameFrame.Size = UDim2.new(0, 300, 0, 150)
+nameFrame.Position = UDim2.new(0.5, -150, 0, 100)
+nameFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+addUICorner(nameFrame, 10)
+
+local nameLabel = Instance.new("TextLabel")
+nameLabel.Parent = nameFrame
+nameLabel.Size = UDim2.new(1, 0, 0, 40)
+nameLabel.Position = UDim2.new(0, 0, 0, 0)
+nameLabel.Text = "Enter New Name"
+nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+nameLabel.BackgroundTransparency = 1
+
+local nameBox = Instance.new("TextBox")
+nameBox.Parent = nameFrame
+nameBox.Size = UDim2.new(1, 0, 0, 40)
+nameBox.Position = UDim2.new(0, 0, 0, 40)
+nameBox.PlaceholderText = "Enter Display Name"
+nameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+nameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+addUICorner(nameBox, 5)
+
+local nameChangeButton = Instance.new("TextButton")
+nameChangeButton.Parent = nameFrame
+nameChangeButton.Size = UDim2.new(1, 0, 0, 40)
+nameChangeButton.Position = UDim2.new(0, 0, 0, 80)
+nameChangeButton.Text = "Change Display Name"
+nameChangeButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+nameChangeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addUICorner(nameChangeButton, 5)
+
+-- Function to change the display name client-side
+nameChangeButton.MouseButton1Click:Connect(function()
+    local customName = nameBox.Text
+    if customName and customName ~= "" then
+        -- Change player name and display name only on the client side
+        player.Name = customName
+        player.DisplayName = customName .. " (Client)"
+    end
 end)
-
--- Create Fake Player and Position it at "Guide Place Outside"
-local fakePlayer = Instance.new("Model")
-fakePlayer.Name = "FakePlayer"
-fakePlayer.Parent = game.Workspace
-
--- Create Fake Character Parts
-local humanoidRootPart = Instance.new("Part")
-humanoidRootPart.Size = Vector3.new(2, 2, 1)
-humanoidRootPart.Position = Vector3.new(17934, -130, -3600)  -- "Guide Place Outside"
-humanoidRootPart.Anchored = true
-humanoidRootPart.CanCollide = false
-humanoidRootPart.Name = "HumanoidRootPart"
-humanoidRootPart.Parent = fakePlayer
-
-local head = Instance.new("Part")
-head.Size = Vector3.new(2, 2, 2)
-head.Position = humanoidRootPart.Position + Vector3.new(0, 3, 0)
-head.Anchored = true
-head.CanCollide = false
-head.Name = "Head"
-head.Parent = fakePlayer
-
-local torso = Instance.new("Part")
-torso.Size = Vector3.new(2, 2, 1)
-torso.Position = humanoidRootPart.Position + Vector3.new(0, 1, 0)
-torso.Anchored = true
-torso.CanCollide = false
-torso.Name = "Torso"
-torso.Parent = fakePlayer
-
-local humanoid = Instance.new("Humanoid")
-humanoid.Health = 100
-humanoid.MaxHealth = 100
-humanoid.Name = "Humanoid"
-humanoid.Parent = fakePlayer
-
--- Made By Cat

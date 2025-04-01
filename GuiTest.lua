@@ -117,6 +117,7 @@ antiVoid.MouseButton1Click:Connect(function()
         voidGuard.Anchored = true
         voidGuard.CanCollide = true
         voidGuard.Parent = game.Workspace
+        voidGuard.Transparency = 0.7  -- Set transparency to 0.7
     else
         antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
         antiVoid.Text = "Activate Anti-Void"
@@ -160,3 +161,41 @@ addUICorner(toggleButton, 10)
 toggleButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
+
+-- Create Fake Player and Position it at "Guide Place Outside"
+local fakePlayer = Instance.new("Model")
+fakePlayer.Name = "FakePlayer"
+fakePlayer.Parent = game.Workspace
+
+-- Create Fake Character Parts
+local humanoidRootPart = Instance.new("Part")
+humanoidRootPart.Size = Vector3.new(2, 2, 1)
+humanoidRootPart.Position = Vector3.new(17934, -130, -3600)  -- "Guide Place Outside"
+humanoidRootPart.Anchored = true
+humanoidRootPart.CanCollide = false
+humanoidRootPart.Name = "HumanoidRootPart"
+humanoidRootPart.Parent = fakePlayer
+
+local head = Instance.new("Part")
+head.Size = Vector3.new(2, 2, 2)
+head.Position = humanoidRootPart.Position + Vector3.new(0, 3, 0)
+head.Anchored = true
+head.CanCollide = false
+head.Name = "Head"
+head.Parent = fakePlayer
+
+local torso = Instance.new("Part")
+torso.Size = Vector3.new(2, 2, 1)
+torso.Position = humanoidRootPart.Position + Vector3.new(0, 1, 0)
+torso.Anchored = true
+torso.CanCollide = false
+torso.Name = "Torso"
+torso.Parent = fakePlayer
+
+local humanoid = Instance.new("Humanoid")
+humanoid.Health = 100
+humanoid.MaxHealth = 100
+humanoid.Name = "Humanoid"
+humanoid.Parent = fakePlayer
+
+-- Made By Cat

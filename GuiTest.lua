@@ -26,7 +26,7 @@ end
 
 local featuresFrame = Instance.new("Frame") featuresFrame.Parent = mainFrame featuresFrame.Name = "Features" featuresFrame.Size = UDim2.new(1, 0, 1, -40) featuresFrame.Position = UDim2.new(0, 0, 0, 40) featuresFrame.BackgroundTransparency = 1 featuresFrame.Visible = false
 
--- Anti-Void Toggle Button local antiVoid = Instance.new("TextButton") antiVoid.Parent = featuresFrame antiVoid.Size = UDim2.new(0, 300, 0, 40) antiVoid.Position = UDim2.new(0.5, -150, 0, 0) antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255) antiVoid.TextColor3 = Color3.fromRGB(255, 255, 255) antiVoid.Text = "Activate Anti-Void" addUICorner(antiVoid, 10)
+local antiVoid = Instance.new("TextButton") antiVoid.Parent = featuresFrame antiVoid.Size = UDim2.new(0, 300, 0, 40) antiVoid.Position = UDim2.new(0.5, -150, 0, 0) antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255) antiVoid.TextColor3 = Color3.fromRGB(255, 255, 255) antiVoid.Text = "Activate Anti-Void" addUICorner(antiVoid, 10)
 
 local voidGuard = nil local antiVoidEnabled = false
 

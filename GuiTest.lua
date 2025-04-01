@@ -9,6 +9,7 @@ local function addUICorner(uiElement, radius)
     corner.Parent = uiElement
 end
 
+-- Create Main GUI Frame
 local mainFrame = Instance.new("Frame")
 mainFrame.Parent = screenGui
 mainFrame.Size = UDim2.new(0, 500, 0, 300)
@@ -20,6 +21,7 @@ local sections = {"Teleports", "Features"}
 local buttons = {}
 local activeSection = "Teleports"
 
+-- Section Buttons Frame
 local sectionFrame = Instance.new("Frame")
 sectionFrame.Parent = mainFrame
 sectionFrame.Size = UDim2.new(1, 0, 0, 40)
@@ -48,6 +50,7 @@ for i, section in ipairs(sections) do
     end)
 end
 
+-- Teleports Frame
 local teleportsFrame = Instance.new("Frame")
 teleportsFrame.Parent = mainFrame
 teleportsFrame.Name = "Teleports"
@@ -82,6 +85,7 @@ for i, tp in ipairs(teleports) do
     end)
 end
 
+-- Features Frame
 local featuresFrame = Instance.new("Frame")
 featuresFrame.Parent = mainFrame
 featuresFrame.Name = "Features"
@@ -143,7 +147,7 @@ flyButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
--- Toggle Button to Open/Close GUI
+-- Open/Close GUI Button (always visible)
 local toggleButton = Instance.new("TextButton")
 toggleButton.Parent = screenGui
 toggleButton.Size = UDim2.new(0, 100, 0, 50)
@@ -154,5 +158,5 @@ toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 addUICorner(toggleButton, 10)
 
 toggleButton.MouseButton1Click:Connect(function()
-    screenGui.Enabled = not screenGui.Enabled
+    mainFrame.Visible = not mainFrame.Visible
 end)

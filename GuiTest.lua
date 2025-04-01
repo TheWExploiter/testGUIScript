@@ -108,7 +108,7 @@ antiVoid.MouseButton1Click:Connect(function()
         antiVoid.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
         antiVoid.Text = "Deactivate Anti-Void"
         voidGuard = Instance.new("Part")
-        voidGuard.Size = Vector3.new(1000, 2, 1000)
+        voidGuard.Size = Vector3.new(1000000000, 2, 1000000000)
         voidGuard.Position = Vector3.new(0, -14, 0)
         voidGuard.Anchored = true
         voidGuard.CanCollide = true
@@ -143,14 +143,17 @@ flyButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
--- Button to toggle the main GUI
+-- Create the button that opens/closes the GUI
 local openButton = Instance.new("TextButton")
 openButton.Parent = player:WaitForChild("PlayerGui")
 openButton.Size = UDim2.new(0, 100, 0, 50)
-openButton.Position = UDim2.new(0, 20, 0.5, -25)
+openButton.Position = UDim2.new(0, 20, 0.5, -25)  -- Position button at the bottom left
 openButton.Text = "Open GUI"
 openButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 openButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Make sure the button is always visible
+openButton.Visible = true
 
 openButton.MouseButton1Click:Connect(function()
     screenGui.Enabled = not screenGui.Enabled

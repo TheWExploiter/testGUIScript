@@ -103,6 +103,22 @@ addUICorner(antiVoid, 10)
 
 local voidGuard = nil
 local antiVoidEnabled = false
+local antiVoidHeight = -14  -- Height under which teleport occurs (Y position)
+local antiVoidRange = 1     -- 1-meter range from the Anti-Void part
+
+-- Monitor player position for Anti-Void teleport
+local function checkAntiVoid()
+    if antiVoidEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local charPos = player.Character.HumanoidRootPart.Position
+        local voidPos = voidGuard.Position
+        
+        -- Check if the player is within 1 meter of the Anti-Void and below the threshold height
+        if (charPos.Y < antiVoidHeight) and (charPos - voidPos).Magnitude < antiVoidRange then
+            -- Teleport player to Starter Island
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(teleports[3][2]) -- Starter Island position
+        end
+    end
+end
 
 antiVoid.MouseButton1Click:Connect(function()
     antiVoidEnabled = not antiVoidEnabled
@@ -111,11 +127,17 @@ antiVoid.MouseButton1Click:Connect(function()
         antiVoid.Text = "Deactivate Anti-Void"
         voidGuard = Instance.new("Part")
         voidGuard.Size = Vector3.new(1000000, 2, 1000000)
-        voidGuard.Position = Vector3.new(0, -10, 0)
+        voidGuard.Position = Vector3.new(0, antiVoidHeight, 0)  -- Height at which the Anti-Void part is
         voidGuard.Anchored = true
         voidGuard.CanCollide = true
         voidGuard.Transparency = 0.8
         voidGuard.Parent = game.Workspace
+        
+        -- Start monitoring the player's position
+        while antiVoidEnabled do
+            wait(0.1)
+            checkAntiVoid()
+        end
     else
         antiVoid.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
         antiVoid.Text = "Activate Anti-Void"
@@ -123,50 +145,6 @@ antiVoid.MouseButton1Click:Connect(function()
             voidGuard:Destroy()
             voidGuard = nil
         end
-    end
-end)
-
--- Speed Button in Features
-local speedBox = Instance.new("TextBox")
-speedBox.Parent = featuresFrame
-speedBox.Size = UDim2.new(0, 150, 0, 40)
-speedBox.Position = UDim2.new(0.5, -75, 0, 50)
-speedBox.Text = "Enter Speed"
-addUICorner(speedBox, 10)
-
-local function setSpeed(value)
-    if player.Character and player.Character:FindFirstChild("Humanoid") then
-        player.Character.Humanoid.WalkSpeed = value
-    end
-end
-
-speedBox.FocusLost:Connect(function()
-    local newSpeed = tonumber(speedBox.Text)
-    if newSpeed then
-        setSpeed(newSpeed)
-        player:SetAttribute("SavedSpeed", newSpeed)
-    end
-end)
-
--- Jump Power Button in Features
-local jumpBoostBox = Instance.new("TextBox")
-jumpBoostBox.Parent = featuresFrame
-jumpBoostBox.Size = UDim2.new(0, 150, 0, 40)
-jumpBoostBox.Position = UDim2.new(0.5, -75, 0, 100)
-jumpBoostBox.Text = "Enter Jump Power"
-addUICorner(jumpBoostBox, 10)
-
-local function setJumpPower(value)
-    if player.Character and player.Character:FindFirstChild("Humanoid") then
-        player.Character.Humanoid.JumpPower = value
-    end
-end
-
-jumpBoostBox.FocusLost:Connect(function()
-    local newJumpPower = tonumber(jumpBoostBox.Text)
-    if newJumpPower then
-        setJumpPower(newJumpPower)
-        player:SetAttribute("SavedJumpPower", newJumpPower)
     end
 end)
 
@@ -180,23 +158,6 @@ toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 addUICorner(toggleButton, 10)
 
-toggleButton.Visible = true
-
 toggleButton.MouseButton1Click:Connect(function()
-    mainFrame.Visible = not mainFrame.Visible  -- Toggle the main frame visibility
-end)
-
-game.Players.PlayerAdded:Connect(function(p)
-    p.CharacterAdded:Connect(function(char)
-        if p == player then
-            local savedSpeed = player:GetAttribute("SavedSpeed")
-            local savedJumpPower = player:GetAttribute("SavedJumpPower")
-            if savedSpeed then
-                setSpeed(savedSpeed)
-            end
-            if savedJumpPower then
-                setJumpPower(savedJumpPower)
-            end
-        end
-    end)
+    mainFrame.Visible = not mainFrame.Visible
 end)

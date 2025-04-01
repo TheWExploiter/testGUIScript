@@ -1,5 +1,4 @@
--- Maximum V5 Testinh
-g
+-- Maximum V5 Script
 
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
@@ -18,6 +17,7 @@ mainFrame.Size = UDim2.new(0, 500, 0, 300)
 mainFrame.Position = UDim2.new(0.5, -250, 0, 0)
 mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 addUICorner(mainFrame, 15)
+mainFrame.Visible = false  -- Set the main frame to invisible initially
 
 local sections = {"Teleports", "Features"}
 local buttons = {}
@@ -182,12 +182,17 @@ nameChangeButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
 nameChangeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 addUICorner(nameChangeButton, 5)
 
--- Function to change the display name client-side
-nameChangeButton.MouseButton1Click:Connect(function()
-    local customName = nameBox.Text
-    if customName and customName ~= "" then
-        -- Change player name and display name only on the client side
-        player.Name = customName
-        player.DisplayName = customName .. " (Client)"
-    end
+-- Open GUI Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Parent = screenGui
+toggleButton.Size = UDim2.new(0, 100, 0, 50)
+toggleButton.Position = UDim2.new(0.95, -110, 0.5, -15)
+toggleButton.Text = "Open GUI"
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addUICorner(toggleButton, 10)
+
+-- Toggle Button to open/close GUI visibility
+toggleButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
 end)
